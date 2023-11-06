@@ -3,6 +3,5 @@ extends Node3D
 @onready var body: RigidBody3D = $RigidBody3D
 
 func _ready():
-	pass
-	#body.apply_torque_impulse(Vector3(0, 1, 0))
+	body.apply_torque_impulse(Vector3(0, 1, 0))
 

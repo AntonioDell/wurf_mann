@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdsatwb2p73p8"]
+
+[ext_resource type="Script" path="res://charge_input.gd" id="1_vomh7"]
+
+[node name="ChargeInput" type="Node"]
+script = ExtResource("1_vomh7")
+
+[node name="DecreaseDelayTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="DecreaseDelayTimer" to="." method="_on_decrease_delay_timer_timeout"]

@@ -1,0 +1,122 @@
+[gd_scene load_steps=10 format=3 uid="uid://6dlej644ivdi"]
+
+[ext_resource type="Script" path="res://test.gd" id="1_wph7m"]
+[ext_resource type="PackedScene" uid="uid://bdsatwb2p73p8" path="res://charge_input.tscn" id="2_e14i7"]
+[ext_resource type="PackedScene" uid="uid://b7kc74h3y26yk" path="res://hammer_throw_simulation.tscn" id="2_fnula"]
+[ext_resource type="PackedScene" uid="uid://pscgdc84bq2q" path="res://release_input.tscn" id="2_ujsf7"]
+[ext_resource type="Script" path="res://Visualizer.gd" id="3_lthso"]
+[ext_resource type="Script" path="res://3DVisualizer.gd" id="4_1xja1"]
+[ext_resource type="Texture2D" uid="uid://4alukqmqocsa" path="res://stick_figure_spritesheet.svg" id="5_aqa7n"]
+[ext_resource type="Script" path="res://RotatingSprite3D.gd" id="6_x6cvs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_84vw2"]
+size = Vector3(0.932492, 1.96582, 0.196706)
+
+[node name="Test" type="Node"]
+script = ExtResource("1_wph7m")
+
+[node name="ReleaseInput" parent="." node_paths=PackedStringArray("charge_input") instance=ExtResource("2_ujsf7")]
+charge_input = NodePath("../ChargeInput")
+
+[node name="ChargeInput" parent="." instance=ExtResource("2_e14i7")]
+
+[node name="HammerThrowSimulation" parent="." instance=ExtResource("2_fnula")]
+
+[node name="Visualizer" type="Node2D" parent="."]
+position = Vector2(457, 328)
+script = ExtResource("3_lthso")
+
+[node name="Line2D" type="Line2D" parent="Visualizer"]
+width = 5.0
+default_color = Color(0.509804, 0.141176, 0.141176, 1)
+joint_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AngularVelocity" type="VSlider" parent="UI"]
+layout_mode = 0
+offset_left = 442.0
+offset_top = 365.0
+offset_right = 472.0
+offset_bottom = 565.0
+max_value = 1.0
+step = 0.01
+
+[node name="TimeToSimulate" type="SpinBox" parent="UI"]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 607.0
+offset_right = 499.062
+offset_bottom = 638.0
+min_value = 1.0
+max_value = 1000.0
+step = 0.1
+value = 5.0
+suffix = "s"
+
+[node name="ChargeVisualizer" type="ProgressBar" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 552.0
+offset_top = 516.0
+offset_right = 721.0
+offset_bottom = 543.0
+max_value = 1.0
+
+[node name="NextInputVisualizer" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 615.0
+offset_top = 557.0
+offset_right = 655.0
+offset_bottom = 580.0
+text = "Next: <>"
+
+[node name="ReleaseVisualizer" type="Button" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 597.0
+offset_top = 586.0
+offset_right = 665.0
+offset_bottom = 617.0
+text = "Release"
+
+[node name="3DVisualizer" type="Node3D" parent="."]
+visible = false
+script = ExtResource("4_1xja1")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="3DVisualizer"]
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+inertia = Vector3(0.1, 0.1, 0.1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3DVisualizer/RigidBody3D"]
+shape = SubResource("BoxShape3D_84vw2")
+
+[node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/RigidBody3D"]
+texture = ExtResource("5_aqa7n")
+hframes = 2
+frame = 1
+region_rect = Rect2(0, 0, 128, 256)
+script = ExtResource("6_x6cvs")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.977497, 0.210949, 0, -0.210949, 0.977497, 0, 0.501548, 4.31752)
+
+[connection signal="is_release_possible_changed" from="ReleaseInput" to="." method="_on_release_input_is_release_possible_changed"]
+[connection signal="release_input" from="ReleaseInput" to="." method="_on_release_input_release_input"]
+[connection signal="charge_changed" from="ChargeInput" to="." method="_on_charge_input_charge_changed"]
+[connection signal="valid_input_changed" from="ChargeInput" to="." method="_on_charge_input_valid_input_changed"]
+[connection signal="value_changed" from="UI/AngularVelocity" to="." method="_on_angular_velocity_value_changed"]
+[connection signal="value_changed" from="UI/TimeToSimulate" to="." method="_on_time_to_simulate_value_changed"]
