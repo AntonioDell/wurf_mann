@@ -3,7 +3,7 @@ class_name ChargeInput
 
 
 signal charge_changed(charge: float)
-signal valid_input_changed(input: int)
+signal input_registered(input: int)
 
 
 const BASE_CHARGE_INCREASE = 0.1
@@ -21,7 +21,7 @@ const BASE_CHARGE_INCREASE = 0.1
 var last_input := 0: 
 	set(value):
 		last_input = value
-		valid_input_changed.emit(sign(last_input) * -1)
+		input_registered.emit(value)
 		
 var next_charge_increase := 0.0
 var time_since_last_press := 0.0
