@@ -1,4 +1,5 @@
 extends Node
+class_name ReleaseInput
 
 
 signal release_input()
@@ -16,7 +17,7 @@ var is_release_possible := false:
 func _ready():
 	charge_input.charge_changed.connect(_on_charge_input_charge_changed)
 
-func _on_charge_input_charge_changed(charge: float):
+func _on_charge_input_charge_changed(charge: float, _old: float):
 	is_release_possible = charge > 0
 
 func _unhandled_input(event):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://6dlej644ivdi"]
+[gd_scene load_steps=14 format=3 uid="uid://6dlej644ivdi"]
 
 [ext_resource type="Script" path="res://test.gd" id="1_wph7m"]
 [ext_resource type="PackedScene" uid="uid://bdsatwb2p73p8" path="res://charge_input.tscn" id="2_e14i7"]
@@ -7,11 +7,13 @@
 [ext_resource type="Script" path="res://Visualizer.gd" id="3_lthso"]
 [ext_resource type="Texture2D" uid="uid://4alukqmqocsa" path="res://stick_figure_spritesheet.svg" id="5_aqa7n"]
 [ext_resource type="Script" path="res://rotate_by_charge.gd" id="7_axeiq"]
+[ext_resource type="Script" path="res://throwable.gd" id="8_tl1w3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_84vw2"]
 size = Vector3(0.932492, 1.96582, 0.196706)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_054hm"]
+size = Vector3(1, 1, 0.293986)
 
 [sub_resource type="Gradient" id="Gradient_nj4b1"]
 offsets = PackedFloat32Array(0)
@@ -28,7 +30,8 @@ script = ExtResource("1_wph7m")
 [node name="ReleaseInput" parent="." node_paths=PackedStringArray("charge_input") instance=ExtResource("2_ujsf7")]
 charge_input = NodePath("../ChargeInput")
 
-[node name="ChargeInput" parent="." instance=ExtResource("2_e14i7")]
+[node name="ChargeInput" parent="." node_paths=PackedStringArray("release_input") instance=ExtResource("2_e14i7")]
+release_input = NodePath("../ReleaseInput")
 
 [node name="ProjectileMotion" parent="." instance=ExtResource("2_fnula")]
 
@@ -50,27 +53,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="AngularVelocity" type="VSlider" parent="UI"]
-layout_mode = 0
-offset_left = 442.0
-offset_top = 365.0
-offset_right = 472.0
-offset_bottom = 565.0
-max_value = 1.0
-step = 0.01
-
-[node name="TimeToSimulate" type="SpinBox" parent="UI"]
-layout_mode = 0
-offset_left = 416.0
-offset_top = 607.0
-offset_right = 499.062
-offset_bottom = 638.0
-min_value = 1.0
-max_value = 1000.0
-step = 0.1
-value = 5.0
-suffix = "s"
 
 [node name="ChargeVisualizer" type="ProgressBar" parent="UI"]
 unique_name_in_owner = true
@@ -101,8 +83,8 @@ text = "Release"
 
 [node name="3DVisualizer" type="Node3D" parent="."]
 
-[node name="RotateByCharge" type="RigidBody3D" parent="3DVisualizer" node_paths=PackedStringArray("charge_input")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.27311, 0)
+[node name="RotateByCharge" type="CharacterBody3D" parent="3DVisualizer" node_paths=PackedStringArray("charge_input")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.46321, -3.27311, 0)
 collision_layer = 0
 collision_mask = 0
 axis_lock_linear_x = true
@@ -110,8 +92,6 @@ axis_lock_linear_y = true
 axis_lock_linear_z = true
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-inertia = Vector3(0.1, 0.1, 0.1)
-angular_damp = 0.5
 script = ExtResource("7_axeiq")
 charge_input = NodePath("../../ChargeInput")
 
@@ -124,17 +104,20 @@ hframes = 2
 frame = 1
 region_rect = Rect2(0, 0, 128, 256)
 
-[node name="Hammer" type="CharacterBody3D" parent="3DVisualizer"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.13854, -2.07527, 0)
+[node name="Throwable" type="CharacterBody3D" parent="3DVisualizer/RotateByCharge" node_paths=PackedStringArray("projectile_motion", "charge_input", "release_input")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793565, 0.378142, 0)
 axis_lock_linear_z = true
 motion_mode = 1
 platform_on_leave = 2
+script = ExtResource("8_tl1w3")
+projectile_motion = NodePath("../../../ProjectileMotion")
+charge_input = NodePath("../../../ChargeInput")
+release_input = NodePath("../../../ReleaseInput")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3DVisualizer/Hammer"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3DVisualizer/RotateByCharge/Throwable"]
 shape = SubResource("BoxShape3D_054hm")
 
-[node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/Hammer"]
+[node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/RotateByCharge/Throwable"]
 billboard = 1
 texture = SubResource("GradientTexture2D_74ydt")
 
@@ -145,8 +128,5 @@ transform = Transform3D(1, 0, 0, 0, 0.977497, 0.210949, 0, -0.210949, 0.977497, 
 environment = SubResource("Environment_kn3tw")
 
 [connection signal="is_release_possible_changed" from="ReleaseInput" to="." method="_on_release_input_is_release_possible_changed"]
-[connection signal="release_input" from="ReleaseInput" to="." method="_on_release_input_release_input"]
 [connection signal="charge_changed" from="ChargeInput" to="." method="_on_charge_input_charge_changed"]
 [connection signal="input_registered" from="ChargeInput" to="." method="_on_charge_input_input_registered"]
-[connection signal="value_changed" from="UI/AngularVelocity" to="." method="_on_angular_velocity_value_changed"]
-[connection signal="value_changed" from="UI/TimeToSimulate" to="." method="_on_time_to_simulate_value_changed"]

@@ -32,7 +32,6 @@ func calculate_velocity(time_since_release: float, charge: float) -> Vector2:
 
 func _get_angular_velocity(charge: float) -> float:
 	var angular_velocity = lerpf(angular_velocity_min, angular_velocity_max, charge)
-	print("Angular velocity", angular_velocity)
 	return angular_velocity
 
 func _get_release_angle(charge: float) -> float:

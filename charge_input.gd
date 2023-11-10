@@ -2,17 +2,18 @@ extends Node
 class_name ChargeInput
 
 
-signal charge_changed(charge: float)
+signal charge_changed(new_charge: float, old_charge: float)
 signal input_registered(input: int)
 
 
 const BASE_CHARGE_INCREASE = 0.1
 
-
+@export var release_input: ReleaseInput
 @export var charge := 0.0:
 	set(value):
-		charge = clampf(value, 0, 1)
-		charge_changed.emit(charge)
+		var new_charge = clampf(value, 0, 1)
+		charge_changed.emit(new_charge, charge)
+		charge = new_charge
 		if charge == 0:
 			last_input = 0
 			_reset_decrease_delay_timer()
@@ -27,6 +28,9 @@ var next_charge_increase := 0.0
 var time_since_last_press := 0.0
 var decrease_factor := 0.0
 
+
+func _ready():
+	release_input.release_input.connect(func(): charge = 0)
 
 func _on_decrease_delay_timer_timeout():
 	decrease_factor = .25
