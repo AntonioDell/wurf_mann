@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name RotateByCharge
 
 
-@export var charge_input: ChargeInput
+@export var throw: Throw
 
 enum State {
 	IDLE,
@@ -18,7 +18,7 @@ var state := State.IDLE
 
 
 func _ready():
-	charge_input.charge_changed.connect(func(new_charge: float, _old: float): charge = new_charge)
+	throw.charge_changed.connect(func(new_charge: float, _old: float): charge = new_charge)
 
 func _physics_process(delta: float):
 	match(state):

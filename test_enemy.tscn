@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://bjunggugd5rn1"]
+
+[ext_resource type="Script" path="res://test_enemy.gd" id="1_hb0x6"]
+[ext_resource type="PackedScene" uid="uid://bhbad3vs5oq1r" path="res://hurtbox.tscn" id="2_wxci2"]
+[ext_resource type="PackedScene" uid="uid://b1wcnqlyvom47" path="res://health_bar.tscn" id="3_5yrkb"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_k8oed"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Gradient" id="Gradient_cbu1x"]
+offsets = PackedFloat32Array(0.221477)
+colors = PackedColorArray(0.365294, 6.72627e-05, 0.350549, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_43wan"]
+gradient = SubResource("Gradient_cbu1x")
+width = 100
+height = 500
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s4da0"]
+size = Vector3(1.33826, 1, 1)
+
+[node name="TestEnemy" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_hb0x6")
+
+[node name="EnemyHurtbox" parent="." instance=ExtResource("2_wxci2")]
+max_health = 20
+health = 20
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(100, 10)
+
+[node name="HealthBar" parent="SubViewport" node_paths=PackedStringArray("hurtbox") instance=ExtResource("3_5yrkb")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+hurtbox = NodePath("../../EnemyHurtbox")
+
+[node name="HealthBarUI" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.33237, 0.1)
+billboard = 1
+texture = SubResource("ViewportTexture_k8oed")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture = SubResource("GradientTexture2D_43wan")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.25505, 0)
+shape = SubResource("BoxShape3D_s4da0")
+
+[connection signal="health_depleted" from="EnemyHurtbox" to="." method="_on_enemy_hurtbox_health_depleted"]
+
+[editable path="EnemyHurtbox"]

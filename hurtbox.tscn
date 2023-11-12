@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhbad3vs5oq1r"]
+
+[ext_resource type="Script" path="res://hurtbox.gd" id="1_7sgec"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_teobc"]
+size = Vector3(1.09329, 5.54806, 1)
+
+[node name="Hurtbox" type="Area3D"]
+script = ExtResource("1_7sgec")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_teobc")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

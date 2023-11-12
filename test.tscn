@@ -1,13 +1,26 @@
-[gd_scene load_steps=14 format=3 uid="uid://6dlej644ivdi"]
+[gd_scene load_steps=18 format=3 uid="uid://6dlej644ivdi"]
 
 [ext_resource type="Script" path="res://test.gd" id="1_wph7m"]
-[ext_resource type="PackedScene" uid="uid://bdsatwb2p73p8" path="res://charge_input.tscn" id="2_e14i7"]
+[ext_resource type="PackedScene" uid="uid://bdsatwb2p73p8" path="res://throw.tscn" id="2_e14i7"]
 [ext_resource type="PackedScene" uid="uid://b7kc74h3y26yk" path="res://projectile_motion.tscn" id="2_fnula"]
-[ext_resource type="PackedScene" uid="uid://pscgdc84bq2q" path="res://release_input.tscn" id="2_ujsf7"]
-[ext_resource type="Script" path="res://Visualizer.gd" id="3_lthso"]
 [ext_resource type="Texture2D" uid="uid://4alukqmqocsa" path="res://stick_figure_spritesheet.svg" id="5_aqa7n"]
 [ext_resource type="Script" path="res://rotate_by_charge.gd" id="7_axeiq"]
+[ext_resource type="PackedScene" uid="uid://bhbad3vs5oq1r" path="res://hurtbox.tscn" id="7_dq7ia"]
 [ext_resource type="Script" path="res://throwable.gd" id="8_tl1w3"]
+[ext_resource type="PackedScene" uid="uid://bjunggugd5rn1" path="res://test_enemy.tscn" id="8_tvirw"]
+[ext_resource type="PackedScene" uid="uid://b1wcnqlyvom47" path="res://health_bar.tscn" id="9_mrqrr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n6yey"]
+size = Vector3(5.17014, 3.3863, 1)
+
+[sub_resource type="Gradient" id="Gradient_tgjqg"]
+offsets = PackedFloat32Array(0.238255)
+colors = PackedColorArray(0, 0.235294, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wr827"]
+gradient = SubResource("Gradient_tgjqg")
+width = 500
+height = 300
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_84vw2"]
 size = Vector3(0.932492, 1.96582, 0.196706)
@@ -27,63 +40,11 @@ gradient = SubResource("Gradient_nj4b1")
 [node name="Test" type="Node"]
 script = ExtResource("1_wph7m")
 
-[node name="ReleaseInput" parent="." node_paths=PackedStringArray("charge_input") instance=ExtResource("2_ujsf7")]
-charge_input = NodePath("../ChargeInput")
-
-[node name="ChargeInput" parent="." node_paths=PackedStringArray("release_input") instance=ExtResource("2_e14i7")]
-release_input = NodePath("../ReleaseInput")
-
-[node name="ProjectileMotion" parent="." instance=ExtResource("2_fnula")]
-
-[node name="Visualizer" type="Node2D" parent="."]
-position = Vector2(457, 328)
-script = ExtResource("3_lthso")
-
-[node name="Line2D" type="Line2D" parent="Visualizer"]
-width = 5.0
-default_color = Color(0.509804, 0.141176, 0.141176, 1)
-joint_mode = 2
-end_cap_mode = 2
-antialiased = true
-
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ChargeVisualizer" type="ProgressBar" parent="UI"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 552.0
-offset_top = 516.0
-offset_right = 721.0
-offset_bottom = 543.0
-max_value = 1.0
-
-[node name="NextInputVisualizer" type="Label" parent="UI"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 615.0
-offset_top = 557.0
-offset_right = 655.0
-offset_bottom = 580.0
-text = "Next: <>"
-
-[node name="ReleaseVisualizer" type="Button" parent="UI"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 597.0
-offset_top = 586.0
-offset_right = 665.0
-offset_bottom = 617.0
-text = "Release"
+[node name="Throw" parent="." instance=ExtResource("2_e14i7")]
 
 [node name="3DVisualizer" type="Node3D" parent="."]
 
-[node name="RotateByCharge" type="CharacterBody3D" parent="3DVisualizer" node_paths=PackedStringArray("charge_input")]
+[node name="RotateByCharge" type="CharacterBody3D" parent="3DVisualizer" node_paths=PackedStringArray("throw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.46321, -3.27311, 0)
 collision_layer = 0
 collision_mask = 0
@@ -93,33 +54,53 @@ axis_lock_linear_z = true
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("7_axeiq")
-charge_input = NodePath("../../ChargeInput")
+throw = NodePath("../../Throw")
+
+[node name="PlayerHurtbox" parent="3DVisualizer/RotateByCharge" instance=ExtResource("7_dq7ia")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39336, -2.28777, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" parent="3DVisualizer/RotateByCharge/PlayerHurtbox" index="0"]
+shape = SubResource("BoxShape3D_n6yey")
+
+[node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/RotateByCharge/PlayerHurtbox"]
+billboard = 1
+texture = SubResource("GradientTexture2D_wr827")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3DVisualizer/RotateByCharge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.59858, 0, 0)
 shape = SubResource("BoxShape3D_84vw2")
 
 [node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/RotateByCharge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.59858, 0, 0)
 texture = ExtResource("5_aqa7n")
 hframes = 2
 frame = 1
 region_rect = Rect2(0, 0, 128, 256)
 
-[node name="Throwable" type="CharacterBody3D" parent="3DVisualizer/RotateByCharge" node_paths=PackedStringArray("projectile_motion", "charge_input", "release_input")]
+[node name="Throwable" type="CharacterBody3D" parent="3DVisualizer/RotateByCharge" node_paths=PackedStringArray("projectile_motion", "throw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793565, 0.378142, 0)
 axis_lock_linear_z = true
 motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("8_tl1w3")
-projectile_motion = NodePath("../../../ProjectileMotion")
-charge_input = NodePath("../../../ChargeInput")
-release_input = NodePath("../../../ReleaseInput")
+projectile_motion = NodePath("ProjectileMotion")
+throw = NodePath("../../../Throw")
+
+[node name="ProjectileMotion" parent="3DVisualizer/RotateByCharge/Throwable" instance=ExtResource("2_fnula")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3DVisualizer/RotateByCharge/Throwable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.59858, 0, 0)
 shape = SubResource("BoxShape3D_054hm")
 
 [node name="Sprite3D" type="Sprite3D" parent="3DVisualizer/RotateByCharge/Throwable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.59858, 0, 0)
 billboard = 1
 texture = SubResource("GradientTexture2D_74ydt")
+
+[node name="TestEnemy" parent="3DVisualizer" instance=ExtResource("8_tvirw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.99885, -4.41277, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.977497, 0.210949, 0, -0.210949, 0.977497, 0, 0.501548, 6.51313)
@@ -127,6 +108,37 @@ transform = Transform3D(1, 0, 0, 0, 0.977497, 0.210949, 0, -0.210949, 0.977497, 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kn3tw")
 
-[connection signal="is_release_possible_changed" from="ReleaseInput" to="." method="_on_release_input_is_release_possible_changed"]
-[connection signal="charge_changed" from="ChargeInput" to="." method="_on_charge_input_charge_changed"]
-[connection signal="input_registered" from="ChargeInput" to="." method="_on_charge_input_input_registered"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Debug UI" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -81.0
+offset_top = -92.0
+offset_right = 81.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="NextInputVisualizer" type="Label" parent="CanvasLayer/Debug UI"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Next: <>"
+horizontal_alignment = 1
+
+[node name="ChargeVisualizer" type="ProgressBar" parent="CanvasLayer/Debug UI"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+
+[node name="ReleaseVisualizer" type="Button" parent="CanvasLayer/Debug UI"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Release"
+
+[node name="HealthBar" parent="CanvasLayer" node_paths=PackedStringArray("hurtbox") instance=ExtResource("9_mrqrr")]
+hurtbox = NodePath("../../3DVisualizer/RotateByCharge/PlayerHurtbox")
+
+[editable path="3DVisualizer/RotateByCharge/PlayerHurtbox"]
