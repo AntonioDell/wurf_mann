@@ -10,12 +10,19 @@ var is_released := false
 @onready var initial_position := position
 
 
-# TODO: Add damage to enemies
-
+func get_damage():
+	_reset()
+	# TODO: Make damage variable somehow
+	return 10
 
 func _ready():
 	throw.released.connect(_on_throw_released)
 	throw.charge_input_registered.connect(_on_throw_charge_input_registered)
+	projectile_motion.modifiers.modify_gravity = func(last_status): 
+		if last_status.peak_reached and last_status.charge < .5:
+			# TODO: Improve gravity increase with time passed
+			return 20
+		return 10
 
 func _physics_process(delta: float):
 	if not is_released:
@@ -32,6 +39,8 @@ func _on_throw_released(charge: float):
 
 func _on_throw_charge_input_registered(input: int): 
 	if input != 0 and is_released:
-		is_released = false
-		position = initial_position
+		_reset()
 
+func _reset():
+	is_released = false
+	position = initial_position
