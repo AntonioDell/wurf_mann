@@ -22,9 +22,9 @@ class_name ProjectileMotion
 ##   change_in_velocity: Vector2 }) -> float
 ## Each callable must be able to handle NaN values for entries in last_status 
 var modifiers: Dictionary = {
-	modify_angular_velocity = func(last_status): return lerpf(angular_velocity_min, angular_velocity_max, last_status.last_charge),
+	modify_angular_velocity = func(last_status): return lerpf(angular_velocity_min, angular_velocity_max, last_status.charge),
 	modify_gravity = func(last_status): return gravity_baseline,
-	modify_release_angle = func(last_status): return lerpf(release_angle_max, release_angle_min, last_status.last_charge),
+	modify_release_angle = func(last_status): return lerpf(release_angle_max, release_angle_min, last_status.charge),
 }
 
 
