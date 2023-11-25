@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://qdkgx57h2ca7"]
+
+[ext_resource type="Script" path="res://throwable.gd" id="1_jugxv"]
+[ext_resource type="PackedScene" uid="uid://b7kc74h3y26yk" path="res://projectile_motion.tscn" id="2_2kleo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_054hm"]
+size = Vector3(1, 1, 0.293986)
+
+[sub_resource type="Gradient" id="Gradient_nj4b1"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_74ydt"]
+gradient = SubResource("Gradient_nj4b1")
+
+[node name="Throwable" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.632086, 0.305435, 0)
+collision_layer = 2
+collision_mask = 2
+axis_lock_linear_z = true
+motion_mode = 1
+platform_on_leave = 2
+script = ExtResource("1_jugxv")
+
+[node name="ProjectileMotion" parent="." instance=ExtResource("2_2kleo")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_054hm")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture = SubResource("GradientTexture2D_74ydt")

@@ -25,52 +25,54 @@ var modifiers: Dictionary = {
 	modify_angular_velocity = func(last_status): return lerpf(angular_velocity_min, angular_velocity_max, last_status.charge),
 	modify_gravity = func(last_status): return gravity_baseline,
 	modify_release_angle = func(last_status): return lerpf(release_angle_max, release_angle_min, last_status.charge),
+	velocity_multiplier = func(last_status): return Vector2.ONE
 }
 
 
-var last_charge := 0.0
-var last_time_since_release := 0.0
-var last_peak_reached := false
-var last_velocity := Vector2.INF
-var last_angular_velocity := INF
-var last_gravity := INF
-var last_release_angle := INF
+var charge := 0.0
+var time_since_release := 0.0
+var peak_reached := false
+var velocity := Vector2.INF
+var angular_velocity := INF
+var gravity := INF
+var release_angle := INF
 
 
 ## Start new projectile motion, resets internal state for [param new_charge].
-func start_new_motion(charge: float):
-	last_charge = clampf(charge, 0.0, 1.0)
-	last_time_since_release = 0.0
-	last_peak_reached = false
-	last_angular_velocity = INF
-	last_release_angle = INF
-	last_gravity = INF
-	
+func start_new_motion(new_charge: float):
+	charge = clampf(new_charge, 0.0, 1.0)
+	time_since_release = 0.0
+	peak_reached = false
+	angular_velocity = INF
+	release_angle = INF
+	gravity = INF
+
+
 ## Get velocity in x and y direction for current motion with time increase 
 ## [param delta].
 func get_velocity(delta: float) -> Vector2:
 	var last_status = {
-		charge = last_charge,
-		time_since_release = last_time_since_release,
-		peak_reached = last_peak_reached,
-		angular_velocity = last_angular_velocity,
-		gravity = last_gravity,
-		release_angle = last_release_angle
+		charge = charge,
+		time_since_release = time_since_release,
+		peak_reached = peak_reached,
+		angular_velocity = angular_velocity,
+		gravity = gravity,
+		release_angle = release_angle
 	}
 	
-	last_time_since_release += delta
-	last_gravity = (modifiers.modify_gravity as Callable).call(last_status)
-	last_angular_velocity = (modifiers.modify_angular_velocity as Callable).call(last_status)
-	last_release_angle = (modifiers.modify_release_angle as Callable).call(last_status)
+	time_since_release += delta
+	gravity = (modifiers.modify_gravity as Callable).call(last_status)
+	angular_velocity = (modifiers.modify_angular_velocity as Callable).call(last_status)
+	release_angle = (modifiers.modify_release_angle as Callable).call(last_status)
 	
-	var x = last_angular_velocity * cos(last_release_angle)
-	var y = (last_angular_velocity * sin(last_release_angle)) - (last_gravity * last_time_since_release)
+	var x = angular_velocity * cos(release_angle)
+	var y = (angular_velocity * sin(release_angle)) - (gravity * time_since_release)
 	
-	var new_velocity = Vector2(x,y)
-	if not last_peak_reached and last_velocity != Vector2.INF and sign(last_velocity.y) > sign(new_velocity.y) :
-		last_peak_reached = true
-	last_velocity = new_velocity
+	var new_velocity: Vector2 = Vector2(x,y) * (modifiers.velocity_multiplier as Callable).call(last_status)
+	if not peak_reached and velocity != Vector2.INF and sign(velocity.y) > sign(new_velocity.y) :
+		peak_reached = true
+	velocity = new_velocity
 	
-	return last_velocity
+	return velocity
 
 

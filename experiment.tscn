@@ -1,11 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://6dlej644ivdi"]
+[gd_scene load_steps=14 format=3 uid="uid://6dlej644ivdi"]
 
 [ext_resource type="PackedScene" uid="uid://bdsatwb2p73p8" path="res://throw.tscn" id="2_e14i7"]
-[ext_resource type="PackedScene" uid="uid://b7kc74h3y26yk" path="res://projectile_motion.tscn" id="2_fnula"]
 [ext_resource type="Texture2D" uid="uid://4alukqmqocsa" path="res://stick_figure_spritesheet.svg" id="5_aqa7n"]
+[ext_resource type="PackedScene" uid="uid://qdkgx57h2ca7" path="res://throwable.tscn" id="5_itk4o"]
 [ext_resource type="Script" path="res://rotate_by_charge.gd" id="7_axeiq"]
 [ext_resource type="PackedScene" uid="uid://bhbad3vs5oq1r" path="res://hurtbox.tscn" id="7_dq7ia"]
-[ext_resource type="Script" path="res://throwable.gd" id="8_tl1w3"]
 [ext_resource type="PackedScene" uid="uid://bjunggugd5rn1" path="res://test_enemy.tscn" id="8_tvirw"]
 [ext_resource type="PackedScene" uid="uid://b4mfs712g66tl" path="res://debug_ui.tscn" id="9_lyfxy"]
 [ext_resource type="PackedScene" uid="uid://b1wcnqlyvom47" path="res://health_bar.tscn" id="9_mrqrr"]
@@ -24,16 +23,6 @@ height = 300
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_84vw2"]
 size = Vector3(0.932492, 1.96582, 0.196706)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_054hm"]
-size = Vector3(1, 1, 0.293986)
-
-[sub_resource type="Gradient" id="Gradient_nj4b1"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_74ydt"]
-gradient = SubResource("Gradient_nj4b1")
 
 [sub_resource type="Environment" id="Environment_kn3tw"]
 
@@ -74,25 +63,7 @@ hframes = 2
 frame = 1
 region_rect = Rect2(0, 0, 128, 256)
 
-[node name="Throwable" type="CharacterBody3D" parent="3DWorld/RotateByCharge" node_paths=PackedStringArray("projectile_motion", "throw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.632086, 0.305435, 0)
-collision_layer = 2
-collision_mask = 2
-axis_lock_linear_z = true
-motion_mode = 1
-platform_on_leave = 2
-script = ExtResource("8_tl1w3")
-projectile_motion = NodePath("ProjectileMotion")
-throw = NodePath("../../../Throw")
-
-[node name="ProjectileMotion" parent="3DWorld/RotateByCharge/Throwable" instance=ExtResource("2_fnula")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3DWorld/RotateByCharge/Throwable"]
-shape = SubResource("BoxShape3D_054hm")
-
-[node name="Sprite3D" type="Sprite3D" parent="3DWorld/RotateByCharge/Throwable"]
-billboard = 1
-texture = SubResource("GradientTexture2D_74ydt")
+[node name="Throwable" parent="3DWorld/RotateByCharge" instance=ExtResource("5_itk4o")]
 
 [node name="TestEnemy" parent="3DWorld" instance=ExtResource("8_tvirw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.99885, -4.41277, 0)
