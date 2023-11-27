@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://throw.gd" id="1_vomh7"]
 
-[node name="ChargeInput" type="Node"]
+[node name="Throw" type="Node"]
 script = ExtResource("1_vomh7")
 
 [node name="DecreaseDelayTimer" type="Timer" parent="."]

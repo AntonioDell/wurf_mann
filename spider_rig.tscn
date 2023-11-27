@@ -113,42 +113,42 @@ modifications/1 = SubResource("SkeletonModification2DCCDIK_2y8kv")
 [node name="Leg1" type="Node2D" parent="Sprites"]
 
 [node name="Start" type="Sprite2D" parent="Sprites/Leg1"]
-position = Vector2(-67.1844, -43.2625)
-rotation = 2.32526
-scale = Vector2(0.99924, 0.99924)
+position = Vector2(-67.1923, -43.2693)
+rotation = 2.32531
+scale = Vector2(0.999275, 0.999275)
 texture = SubResource("GradientTexture2D_r0k4s")
 
 [node name="Middle" type="Sprite2D" parent="Sprites/Leg1/Start"]
-position = Vector2(45.6745, 58.6551)
-rotation = -1.28191
-scale = Vector2(0.999969, 0.999969)
+position = Vector2(45.6748, 58.6487)
+rotation = -1.28199
+scale = Vector2(0.999954, 0.999954)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="End" type="Sprite2D" parent="Sprites/Leg1/Start/Middle"]
-position = Vector2(40.2002, 70.5751)
-rotation = -1.06037
-scale = Vector2(0.999889, 0.999889)
+position = Vector2(40.2021, 70.5745)
+rotation = -1.06038
+scale = Vector2(0.999903, 0.999903)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="Leg2" type="Node2D" parent="Sprites"]
 position = Vector2(0, 1)
 
 [node name="Start" type="Sprite2D" parent="Sprites/Leg2"]
-position = Vector2(71.9217, -41.7339)
-rotation = 0.931528
-scale = Vector2(0.999745, 0.999745)
+position = Vector2(71.9282, -41.7411)
+rotation = 0.93146
+scale = Vector2(0.999759, 0.999759)
 texture = SubResource("GradientTexture2D_r0k4s")
 
 [node name="Middle" type="Sprite2D" parent="Sprites/Leg2/Start"]
-position = Vector2(43.1504, -69.1979)
-rotation = 1.08005
-scale = Vector2(0.999851, 0.999851)
+position = Vector2(43.1515, -69.191)
+rotation = 1.08015
+scale = Vector2(0.999844, 0.999844)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="End" type="Sprite2D" parent="Sprites/Leg2/Start/Middle"]
-position = Vector2(42.3326, -65.445)
-rotation = -1.99651
-scale = Vector2(0.999878, 0.999878)
+position = Vector2(42.3346, -65.4489)
+rotation = -1.9965
+scale = Vector2(0.999917, 0.999917)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="Torso" type="Polygon2D" parent="Sprites"]
@@ -171,7 +171,6 @@ metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso"]
 position = Vector2(0, -10.0001)
-scale = Vector2(1, 1)
 remote_path = NodePath("../../../Sprites/Torso")
 
 [node name="Leg1Start" type="Bone2D" parent="Skeleton2D/Torso"]
