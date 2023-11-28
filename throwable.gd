@@ -17,8 +17,8 @@ func get_damage():
 
 func _ready():
 	throw.released.connect(_on_throw_released)
-	
 	throw.charge_input_registered.connect(_on_throw_charge_input_registered)
+	
 	projectile_motion.modifiers.modify_gravity = func(last_status): 
 		if last_status.peak_reached and last_status.charge < .5:
 			# TODO: Improve gravity increase with time passed

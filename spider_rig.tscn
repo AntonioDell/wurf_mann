@@ -113,7 +113,7 @@ modifications/1 = SubResource("SkeletonModification2DCCDIK_2y8kv")
 [node name="Leg1" type="Node2D" parent="Sprites"]
 
 [node name="Start" type="Sprite2D" parent="Sprites/Leg1"]
-position = Vector2(-67.1923, -43.2693)
+position = Vector2(-67.1923, -43.2694)
 rotation = 2.32531
 scale = Vector2(0.999275, 0.999275)
 texture = SubResource("GradientTexture2D_r0k4s")
@@ -121,11 +121,11 @@ texture = SubResource("GradientTexture2D_r0k4s")
 [node name="Middle" type="Sprite2D" parent="Sprites/Leg1/Start"]
 position = Vector2(45.6748, 58.6487)
 rotation = -1.28199
-scale = Vector2(0.999954, 0.999954)
+scale = Vector2(0.999953, 0.999953)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="End" type="Sprite2D" parent="Sprites/Leg1/Start/Middle"]
-position = Vector2(40.2021, 70.5745)
+position = Vector2(40.2021, 70.5746)
 rotation = -1.06038
 scale = Vector2(0.999903, 0.999903)
 texture = SubResource("GradientTexture2D_yvohe")
@@ -134,19 +134,19 @@ texture = SubResource("GradientTexture2D_yvohe")
 position = Vector2(0, 1)
 
 [node name="Start" type="Sprite2D" parent="Sprites/Leg2"]
-position = Vector2(71.9282, -41.7411)
-rotation = 0.93146
+position = Vector2(71.9282, -41.7412)
+rotation = 0.931459
 scale = Vector2(0.999759, 0.999759)
 texture = SubResource("GradientTexture2D_r0k4s")
 
 [node name="Middle" type="Sprite2D" parent="Sprites/Leg2/Start"]
-position = Vector2(43.1515, -69.191)
-rotation = 1.08015
+position = Vector2(43.1515, -69.1909)
+rotation = 1.08016
 scale = Vector2(0.999844, 0.999844)
 texture = SubResource("GradientTexture2D_yvohe")
 
 [node name="End" type="Sprite2D" parent="Sprites/Leg2/Start/Middle"]
-position = Vector2(42.3346, -65.4489)
+position = Vector2(42.3347, -65.4489)
 rotation = -1.9965
 scale = Vector2(0.999917, 0.999917)
 texture = SubResource("GradientTexture2D_yvohe")
@@ -167,7 +167,6 @@ rest = Transform2D(0.999987, 0, 0, 0.999987, 0, 0)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = 0.0
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso"]
 position = Vector2(0, -10.0001)
@@ -181,7 +180,6 @@ rest = Transform2D(0.397985, 0.916616, -0.916616, 0.397985, -30.9516, -8.98182)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = -194.252
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg1Start"]
 position = Vector2(-45, 20)
@@ -196,7 +194,6 @@ rest = Transform2D(0.713277, -0.700814, 0.700814, 0.713277, -86.0322, 37.0189)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = 38.006
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg1Start/Leg1Middle"]
 position = Vector2(-30, 38)
@@ -211,7 +208,6 @@ rest = Transform2D(0.920329, -0.390897, 0.390897, 0.920329, -58.9999, 77.0016)
 auto_calculate_length_and_angle = false
 length = 93.0
 bone_angle = 90.0
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg1Start/Leg1Middle/Leg1End"]
 position = Vector2(0, 45)
@@ -228,7 +224,6 @@ rest = Transform2D(0.854294, -0.519352, 0.519352, 0.854294, 30.9569, -8.98329)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = -31.672
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg2Start"]
 position = Vector2(51, -5)
@@ -243,7 +238,6 @@ rest = Transform2D(0.969664, 0.243804, -0.243804, 0.969664, 98.0104, -9.00021)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = 99.238
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg2Start/Leg2Middle"]
 position = Vector2(35, 33)
@@ -258,7 +252,6 @@ rest = Transform2D(0.453185, 0.891323, -0.891323, 0.453185, 70.0089, 65.0052)
 auto_calculate_length_and_angle = false
 length = 93.0
 bone_angle = 45.0
-metadata/_local_pose_override_enabled_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Skeleton2D/Torso/Leg2Start/Leg2Middle/Leg2End"]
 position = Vector2(31.7683, 33.2922)
